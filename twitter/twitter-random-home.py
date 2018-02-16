@@ -7,7 +7,7 @@
 #-----------------------------------------------------------------------
 
 from twitter import Twitter, OAuth, TwitterHTTPError, TwitterStream
-
+import random
 try:
     import json
 except ImportError:
@@ -29,15 +29,13 @@ twitter = Twitter(
 # request my home timeline
 # twitter API docs: https://dev.twitter.com/rest/reference/get/statuses/home_timeline
 #-----------------------------------------------------------------------
-tweets = json.dumps(twitter.statuses.home_timeline(count = 200), indent=4)
+tweets = twitter.statuses.home_timeline(count = 20)
 
-#-----------------------------------------------------------------------
-# loop through each of my statuses, and print its content
-#-----------------------------------------------------------------------
-#for tweet in tweets:
-	#print "(%s) @%s %s" % (status["created_at"], status["user"]["screen_name"], status["text"])
-        #print json.dumps(tweet, indent=4)
-        #print tweet["user"]["screen_name"]
-        #print json.dumps(tweet, indent=4)
+# Twitter List respose
+#print json.dumps(tweets[0]["user"]["screen_name"], indent = 4)
 
-print(tweets)
+random.shuffle(tweets)
+
+#for i in tweets:
+    # print(json.dumps(random.choice(tweets)["text"], indent = 4))
+    # print(json.dumps(tweets["text"], indent = 4))
