@@ -29,12 +29,15 @@ twitter = Twitter(
 # request my home timeline
 # twitter API docs: https://dev.twitter.com/rest/reference/get/statuses/home_timeline
 #-----------------------------------------------------------------------
-tweets = twitter.statuses.home_timeline(count = 50)
+tweets = json.dumps(twitter.statuses.home_timeline(count = 200), indent=4)
 
 #-----------------------------------------------------------------------
 # loop through each of my statuses, and print its content
 #-----------------------------------------------------------------------
-for tweet in tweets:
+#for tweet in tweets:
 	#print "(%s) @%s %s" % (status["created_at"], status["user"]["screen_name"], status["text"])
         #print json.dumps(tweet, indent=4)
-        print tweet["user"]["screen_name"]
+        #print tweet["user"]["screen_name"]
+        #print json.dumps(tweet, indent=4)
+
+print(tweets)
