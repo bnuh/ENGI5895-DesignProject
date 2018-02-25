@@ -1,5 +1,7 @@
 package swsmr;
 import java.util.*;
+
+import twitter4j.Paging;
 import twitter4j.Status;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
@@ -23,7 +25,10 @@ public class Main {
             List<Status> status = twitter.getHomeTimeline();
             for (Status st : status){
                 System.out.println(st.getUser().getName()+ "\n" + st.getText());
-
+                System.out.println("Retweet Count - " + st.getRetweetCount());
+                System.out.println("Date - " + st.getCreatedAt());
+                System.out.println("Location - " + st.getGeoLocation());
+                System.out.println("Favorites - " + st.getFavoriteCount() + "\n");
             }
     }
 
