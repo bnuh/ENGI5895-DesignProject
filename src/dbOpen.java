@@ -1,8 +1,6 @@
-package SWSMR;
-
 import java.sql.*;
 
-public class DB {
+public class dbOpen {
 
     public static void main(String[] args) {
         Connection c = null;
