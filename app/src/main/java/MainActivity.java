@@ -9,18 +9,23 @@ import android.view.Gravity;
 import com.mindorks.placeholderview.SwipeDecor;
 import com.mindorks.placeholderview.SwipeDirectionalView;
 
+import java.util.List;
+
+import twitter4j.Status;
+
 public class MainActivity extends AppCompatActivity implements Card.Callback {
 
     private SwipeDirectionalView mSwipeView;
     private Context mContext;
     private int mAnimationDuration = 300;
+    private List<Status> statuses;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mSwipeView = (SwipeDirectionalView) findViewById(R.id.swipeView);
+        mSwipeView = findViewById(R.id.swipeView);
         mContext = getApplicationContext();
 
         int bottomMargin = Utils.dpToPx(160);
@@ -42,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements Card.Callback {
 
 
         Point cardViewHolderSize = new Point(windowSize.x, windowSize.y - bottomMargin);
+        // Different size for horizontal
 
         for (Profile profile : Utils.loadProfiles(this.getApplicationContext())) {
             mSwipeView.addView(new Card(mContext, profile, cardViewHolderSize, this));

@@ -28,7 +28,6 @@ import java.util.List;
 
 public class Utils {
 
-
     public static List<Profile> loadProfiles(Context context) {
         try {
             GsonBuilder builder = new GsonBuilder();
@@ -46,7 +45,7 @@ public class Utils {
         }
     }
 
-    public static List<Status> loadStatus(Context context) {
+    public static List<Status> loadStatus() {
         ConfigurationBuilder cf = new ConfigurationBuilder();
 
         cf.setDebugEnabled(true)

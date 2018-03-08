@@ -89,6 +89,16 @@ public class Card {
         ((FrameLayout)mSwipeView).setAlpha(alpha);
     }
 
+    //@SwipeOut
+    private void onSwipedOut(){
+        // Negative
+    }
+
+    //@SwipeIn
+    private void onSwipeIn(){
+        // Positive
+    }
+
     interface Callback {
         void onSwipeUp();
     }
