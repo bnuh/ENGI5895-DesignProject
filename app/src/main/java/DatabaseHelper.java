@@ -15,9 +15,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_NAME = "Swiper";
     private static final String COL1 = "ID";
     private static final String COL2 = "name";
-    private static final String COL3 = "value";
-
-
+    private static final String COL3 = "rating";
 
     public DatabaseHelper(Context context) {
         super(context, TABLE_NAME, null, 1);
@@ -26,7 +24,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createTable = "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COL2 +" TEXT)";
+                COL2 +" TEXT, " + COL3 + " INTEGER)";
         db.execSQL(createTable);
     }
 
@@ -40,6 +38,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL2, item);
+        contentValues.put(COL3, 1);
 
         Log.d(TAG, "addData: Adding " + item + " to " + TABLE_NAME);
 

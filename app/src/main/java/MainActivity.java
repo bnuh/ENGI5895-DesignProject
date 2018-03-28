@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements Card.Callback {
                 mContext = getApplicationContext();
 
                 for (twitter4j.Status st : tweets) {
-                    if (!db.findData("name",st.getUser().getName())) {
+                    if (!db.findData("name",'"' + st.getUser().getName() + '"')) {
                         db.addData(st.getUser().getName());
                         Log.d("TWEETS", st.getUser().getName());
                         Log.d("TWEETS", Long.toString(st.getId()));
