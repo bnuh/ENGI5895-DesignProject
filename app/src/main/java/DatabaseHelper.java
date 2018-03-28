@@ -40,7 +40,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(createTable);
     }
 
-    public void addCol(SQLiteDatabase db, String tablename, String colName, String type) {
+    public void addCol(String tablename, String colName, String type) {
+        SQLiteDatabase db = this.getWritableDatabase();
         String createCol = "ALTER TABLE " + tablename + " ADD COLUMN " + colName + type;
         db.execSQL(createcreateColable);
     }
@@ -124,6 +125,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Log.d(TAG, "deleteName: query: " + query);
         Log.d(TAG, "deleteName: Deleting " + name + " from database.");
         db.execSQL(query);
+    }
+
+    public void createNew(String tablename) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String createTable = "CREATE TABLE " + tablename + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COL2 +" TEXT, " + COL3 + " INTEGER)";
+        db.execSQL(createTable);
+    }
+
+    public void deleteTable(String tablename) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String createTable = "DROP TABLE [ IF EXISTS ] " + tablename;
+        db.execSQL(createTable);
     }
 
 }
