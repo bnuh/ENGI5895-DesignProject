@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import com.mindorks.placeholderview.SwipeDecor;
 import com.mindorks.placeholderview.SwipeDirectionalView;
 
+import java.sql.Date;
 import java.util.List;
 
 import twitter4j.Status;
@@ -24,13 +25,18 @@ public class MainActivity extends AppCompatActivity implements Card.Callback {
     private int mAnimationDuration = 300;
     private List<Status> statuses;
 
+    DatabaseHelper db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         TwitterFetch t = new TwitterFetch();
-        DatabaseManager db = new DatabaseManager();
+
+        db = new DatabaseHelper(this);
+
+        db.addData("Test");
 
         t.execute();
 
@@ -97,8 +103,13 @@ public class MainActivity extends AppCompatActivity implements Card.Callback {
                 mContext = getApplicationContext();
 
                 for (twitter4j.Status st : tweets) {
-                    Log.d("TWEETS", st.getUser().getName());
-                    Log.d("TWEETS", Long.toString(st.getId()));
+                    if (!db.findData("name",st.getUser().getName())) {
+                        db.addData(st.getUser().getName());
+                        Log.d("TWEETS", st.getUser().getName());
+                        Log.d("TWEETS", Long.toString(st.getId()));
+                        Log.d("TWEETS", st.getText());
+                        //Log.d("TWEETS", st.getCreatedAt());
+                    }
                 }
 
             }
