@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.util.Log;
 import android.os.AsyncTask;
+import android.widget.TextView;
+import android.widget.ImageView;
 
 import com.mindorks.placeholderview.SwipeDecor;
 import com.mindorks.placeholderview.SwipeDirectionalView;
@@ -35,8 +37,6 @@ public class MainActivity extends AppCompatActivity implements Card.Callback {
         TwitterFetch t = new TwitterFetch();
 
         db = new DatabaseHelper(this);
-
-        db.addData("Test");
 
         t.execute();
 
@@ -67,13 +67,16 @@ public class MainActivity extends AppCompatActivity implements Card.Callback {
             mSwipeView.addView(new Card(mContext, profile, cardViewHolderSize, this));
         }
 
-
         Log.d("DEMO", "Main Activity Done");
 
     }
 
     public void onSwipeUp() {
-        // Favorited
+        Log.d("DEBUG_UP", "UP");
+    }
+
+    public void onSwipeLeft(TextView tweetView)  {
+        Log.d("DEBUG_LEFT", tweetView.getText().toString());
     }
 
     public class TwitterFetch extends AsyncTask<Void, Void, String> {

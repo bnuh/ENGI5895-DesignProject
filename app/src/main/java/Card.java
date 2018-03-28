@@ -20,8 +20,6 @@ import com.mindorks.placeholderview.annotations.swipe.SwipeTouch;
 import com.mindorks.placeholderview.annotations.swipe.SwipeView;
 import com.mindorks.placeholderview.annotations.swipe.SwipingDirection;
 
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
-
 @Layout(R.layout.card_view)
 public class Card {
 
@@ -72,6 +70,11 @@ public class Card {
         if (direction.getDirection() == SwipeDirection.TOP.getDirection()) {
             mCallback.onSwipeUp();
         }
+        if (direction.getDirection() == SwipeDirection.LEFT.getDirection() ||
+                direction.getDirection() == SwipeDirection.LEFT_TOP.getDirection() ||
+                direction.getDirection() == SwipeDirection.LEFT_BOTTOM.getDirection()) {
+            mCallback.onSwipeLeft(tweetView);
+        }
     }
 
     @SwipeCancelState
@@ -94,7 +97,7 @@ public class Card {
 
         float alpha = 1 - distance / cardHolderDiagonalLength;
 
-        Log.d("DEBUG_DIR", "onSwipeTouch "
+        Log.d("LIVE_DIR", "onSwipeTouch "
                 + " xStart : " + xStart
                 + " yStart : " + yStart
                 + " xCurrent : " + xCurrent
@@ -110,5 +113,6 @@ public class Card {
 
     interface Callback {
         void onSwipeUp();
+        void onSwipeLeft(TextView tweet);
     }
 }
