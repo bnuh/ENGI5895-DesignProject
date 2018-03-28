@@ -34,6 +34,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    public void createNew(SQLiteDatabase db, String tablename) {
+        String createTable = "CREATE TABLE " + tablename + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COL2 +" TEXT, " + COL3 + " INTEGER)";
+        db.execSQL(createTable);
+    }
+
     public boolean addData(String item) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
