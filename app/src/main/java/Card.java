@@ -84,7 +84,7 @@ public class Card {
 
     @SwipingDirection
     public void onSwipingDirection(SwipeDirection direction) {
-        //Log.d("DEBUG_SWIPE", "Swiping " + direction.name());
+        Log.d("DEBUG_SWIPE", "Swiping " + direction.name());
     }
 
 

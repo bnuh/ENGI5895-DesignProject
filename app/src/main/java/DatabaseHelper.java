@@ -40,6 +40,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(createTable);
     }
 
+    public void addCol(SQLiteDatabase db, String tablename, String colName, String type) {
+        String createCol = "ALTER TABLE " + tablename + " ADD COLUMN " + colName + type;
+        db.execSQL(createcreateColable);
+    }
+
     public boolean addData(String item) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -49,6 +54,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Log.d(TAG, "addData: Adding " + item + " to " + TABLE_NAME);
 
         long result = db.insert(TABLE_NAME, null, contentValues);
+
+        if (result == -1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public boolean addUser(String name, String image) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COL2, item);
+        contentValues.put(COL3, 1);
+
+        Log.d("DB", "addData: Adding " + item + " to " + TABLE_NAME);
+
+        long result = db.insert("Users", null, contentValues);
 
         if (result == -1) {
             return false;

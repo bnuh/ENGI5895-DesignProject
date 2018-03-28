@@ -17,6 +17,7 @@ import java.sql.Date;
 import java.util.List;
 
 import twitter4j.Status;
+import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
 
@@ -25,7 +26,6 @@ public class MainActivity extends AppCompatActivity implements Card.Callback {
     private SwipeDirectionalView mSwipeView;
     private Context mContext;
     private int mAnimationDuration = 300;
-    private List<Status> statuses;
 
     DatabaseHelper db;
 
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements Card.Callback {
     }
 
     public void onSwipeUp() {
-        Log.d("DEBUG_UP", "UP");
+
     }
 
     public void onSwipeLeft(TextView tweetView)  {
@@ -111,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements Card.Callback {
                         Log.d("TWEETS", st.getUser().getName());
                         Log.d("TWEETS", Long.toString(st.getId()));
                         Log.d("TWEETS", st.getText());
+                        Log.d("TWEETS", st.getUser().getProfileImageURL());
                         //Log.d("TWEETS", st.getCreatedAt());
                     }
                 }
