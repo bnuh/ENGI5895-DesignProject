@@ -3,17 +3,22 @@ package dependency.greendao.test.tinder.directional;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
-import android.database.Cursor;
 import android.graphics.Point;
 import android.os.Build;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
-
+import android.database.Cursor;
 import java.util.List;
+import twitter4j.Status;
+import twitter4j.TwitterFactory;
+import twitter4j.conf.ConfigurationBuilder;
+import twitter4j.json.DataObjectFactory;
 
-import dependency.greendao.test.tinder.directional.DatabaseHelper;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import org.json.JSONArray;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,55 +28,82 @@ import java.util.List;
 
 public class Utils {
 
-    public static List<Profile> loadProfiles(DatabaseHelper db) {
-        List<dependency.greendao.test.tinder.directional.Profile> profiles = new ArrayList<>();
-        Cursor cursor = db.getAll();
-        Profile temp = new Profile("test");
-
-        int count = cursor.getColumnCount();
-        String name;
-        String tweet;
-        String tweetID;
-        String imageURL;
-
-        if (cursor!=null )
-        {
-
-            if  (cursor.moveToFirst())
-            {
-                do
-                {
-                    for (int i = 0 ; i< count; i++)
-                    {
-                        if (i == 1) {
-                            temp.setName(cursor.getString(1));
-                        }
-
-                        else if (i == 2){
-                            temp.setImage(cursor.getString(2));
-                        }
-                        else if (i == 3){
-                            temp.setTweet(cursor.getString(3));
-                        }
-
-                        else if (i == 4){
-                            temp.setTweetID(cursor.getString(4));
-                        }
-                    }
-                    profiles.add(temp);
-                }
-                while (cursor.moveToNext());
+    public static List<Profile> loadProfiles(Context context) {
+        try {
+            GsonBuilder builder = new GsonBuilder();
+            Gson gson = builder.create();
+            JSONArray array = new JSONArray(loadJSONFromAsset(context, "profiles.json"));
+            List<Profile> profileList = new ArrayList<>();
+            for (int i = 0; i < array.length(); i++) {
+                Profile profile = gson.fromJson(array.getString(i), Profile.class);
+                profileList.add(profile);
             }
-
+            return profileList;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
-            cursor.close();
-            return profiles;
+    }
+
+    public static ArrayList<Profile> loadProfiles(DatabaseHelper db) {
+        ArrayList<Profile> profiles = new ArrayList<>();
+        profiles = db.getAll();
+        Profile temp = new Profile();
+
+        return profiles;
         //} catch (Exception e) {
         //    e.printStackTrace();
         //    return null;
         //}
     }
 
+    public static List<Status> loadStatus() {
+        ConfigurationBuilder cf = new ConfigurationBuilder();
+
+        cf.setDebugEnabled(true)
+                .setOAuthConsumerKey("20yNRIOurzQaKzs9t7C4HXWuV")
+                .setOAuthConsumerSecret("Pl9z3CqDrj5QSBYkMDaKxT6cx4AUSlf4Jm7UOf8ovkdgcuQvcD")
+                .setOAuthAccessToken("1942242924-aQgcIo4phlvOu38IGOphtIazT3mSiWUAnkTypHX")
+                .setOAuthAccessTokenSecret("zTY5tAJKVG6aGW44DIEHzprxBDXZzpxVQfA44dcjl6KSt");
+
+        try {
+            TwitterFactory tf = new TwitterFactory(cf.build());
+
+            twitter4j.Twitter twitter = tf.getInstance();
+
+            List<Status> status = twitter.getHomeTimeline();
+            for (Status st : status) {
+                System.out.println(st.getUser().getName() + "\n" + st.getText());
+                System.out.println("Retweet Count - " + st.getRetweetCount());
+                System.out.println("Date - " + st.getCreatedAt());
+                System.out.println("Location - " + st.getGeoLocation());
+                System.out.println("Favorites - " + st.getFavoriteCount() + "\n");
+            }
+            return status;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    };
+
+
+    private static String loadJSONFromAsset(Context context, String jsonFileName) {
+        String json = null;
+        InputStream is = null;
+        try {
+            AssetManager manager = context.getAssets();
+            is = manager.open(jsonFileName);
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
+    }
 
     public static Point getDisplaySize(WindowManager windowManager) {
         try {

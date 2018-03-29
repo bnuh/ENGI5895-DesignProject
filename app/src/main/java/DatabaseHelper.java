@@ -7,6 +7,9 @@ import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import java.util.ArrayList;
+
+import dependency.greendao.test.tinder.directional.Profile;
 
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -16,13 +19,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COL1 = "ID";
     private static final String COL2 = "name";
     private static final String COL3 = "rating";
-    private static final String COL4 = "imageURL";
-    private static final String COL5 = "tweet";
-    private static final String COL6 = "tweetID";
-    private static final String COL7 = "viewed";
-    private static final String COL8 = "topic";
-    private static final String COL9 = "username";
-    private static final String COL10 = "location";
 
     public DatabaseHelper(Context context) {
         super(context, TABLE_NAME, null, 1);
@@ -30,14 +26,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createTable = "CREATE TABLE Users " + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+        String createTable = "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COL2 +" TEXT, " + COL3 + " INTEGER)";
-        db.execSQL(createTable);
-        createTable = "CREATE TABLE Tweets " + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COL2 +" TEXT, " + COL4 + " TEXT, " + COL5 + " TEXT, " + COL6 + " INTEGER, " + COL7 + " INTEGER " + COL9 + " TEXT " + COL10 + " TEXT)";
-        db.execSQL(createTable);
-        createTable = "CREATE TABLE Topics " + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COL8 + " TEXT, " + COL3 + " INTEGER)";
         db.execSQL(createTable);
     }
 
@@ -47,23 +37,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public int getCount() {
-        String countQuery = "SELECT  * FROM Tweets";
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(countQuery, null);
-        int count = cursor.getCount();
-        cursor.close();
-        return count;
-    }
-
-
-    public Cursor getAll() {
+    public ArrayList<Profile> getAll() {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT * FROM Tweets";
         Cursor data = db.rawQuery(query, null);
-        return data;
+        ArrayList<Profile> array = new ArrayList<Profile>();
+        while (data.moveToNext()) {
+            Profile temp = new Profile();
+            temp.setName(data.getString(data.getColumnIndex("name")));
+            temp.setTweetID(data.getString(data.getColumnIndex("tweetID")));
+            temp.setTweet(data.getString(data.getColumnIndex("tweet")));
+            temp.setImage(data.getString(data.getColumnIndex("imageURL")));
+            array.add(temp);
+            data.moveToNext();
+        }
+        return array;
     }
-
 
     public void createNew(SQLiteDatabase db, String tablename) {
         String createTable = "CREATE TABLE " + tablename + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -71,10 +60,110 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(createTable);
     }
 
-    public void addCol(String tablename, String colName, String type) {
-        SQLiteDatabase db = this.getWritableDatabase();
+    public void addCol(SQLiteDatabase db, String tablename, String colName, String type) {
         String createCol = "ALTER TABLE " + tablename + " ADD COLUMN " + colName + type;
         db.execSQL(createCol);
+    }
+
+    public boolean addData(String item) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COL2, item);
+        contentValues.put(COL3, 1);
+
+        Log.d(TAG, "addData: Adding " + item + " to " + TABLE_NAME);
+
+        long result = db.insert(TABLE_NAME, null, contentValues);
+
+        if (result == -1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public boolean addTweet(twitter4j.Status st) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("name", st.getUser().getName());
+        contentValues.put("tweet", st.getText());
+        contentValues.put("tweetID", st.getId());
+        contentValues.put("imageURL", st.getUser().getProfileImageURL());
+        //contentValues.put("username", st.getUser().getScreenName());
+        //contentValues.put("location", st.getUser().getLocation());
+        contentValues.put("viewed", 0);
+
+        long result = db.insert("Tweets", null, contentValues);
+
+        if (result == -1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public boolean addUser(String name) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("name", name);
+        contentValues.put("rating", 1);
+
+        Log.d("DB", "addData: Adding " + name + " to " + "Users");
+
+        long result = db.insert("Users", null, contentValues);
+
+        if (result == -1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public Cursor getData(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM " + TABLE_NAME;
+        Cursor data = db.rawQuery(query, null);
+        return data;
+    }
+
+    public boolean findData (String field, long value, String table) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String Query = "SELECT * FROM " + table + " WHERE " + field + " = '" + value + "'";
+        Cursor cursor = db.rawQuery(Query, null);
+        if(cursor.getCount() <= 0){
+            cursor.close();
+            return false;
+        }
+        cursor.close();
+        return true;
+    }
+
+    public Cursor getItemID(String name){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT " + COL1 + " FROM " + TABLE_NAME +
+                " WHERE " + COL2 + " = '" + name + "'";
+        Cursor data = db.rawQuery(query, null);
+        return data;
+    }
+
+    public void updateName(String newName, int id, String oldName){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE " + TABLE_NAME + " SET " + COL2 +
+                " = '" + newName + "' WHERE " + COL1 + " = '" + id + "'" +
+                " AND " + COL2 + " = '" + oldName + "'";
+        Log.d(TAG, "updateName: query: " + query);
+        Log.d(TAG, "updateName: Setting name to " + newName);
+        db.execSQL(query);
+    }
+
+    public void deleteName(int id, String name){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DELETE FROM " + TABLE_NAME + " WHERE "
+                + COL1 + " = '" + id + "'" +
+                " AND " + COL2 + " = '" + name + "'";
+        Log.d(TAG, "deleteName: query: " + query);
+        Log.d(TAG, "deleteName: Deleting " + name + " from database.");
+        db.execSQL(query);
     }
 
     public void reduceUserRating(String tablename, String id) {
@@ -99,126 +188,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "UPDATE Topics set rating = " + 1 + " WHERE topic = " + topic;
         db.execSQL(query);
-    }
-
-    public boolean addData(String table, String item, String col) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(col, item);
-
-        Log.d(TAG, "addData: Adding " + item + " to " + table);
-
-        long result = db.insert(table, null, contentValues);
-
-        if (result == -1) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    public boolean addTweet(twitter4j.Status st) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("name", st.getUser().getName());
-        contentValues.put("tweet", st.getText());
-        contentValues.put("tweetID", st.getId());
-        contentValues.put("imageURL", st.getUser().getProfileImageURL());
-        contentValues.put("username", st.getUser().getScreenName());
-        contentValues.put("location", st.getUser().getLocation());
-        contentValues.put("viewed", 0);
-
-        long result = db.insert("Tweets", null, contentValues);
-
-        if (result == -1) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    public boolean addUser(String name, String image) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("name", name);
-        contentValues.put("rating", 1);
-
-        Log.d("DB", "addData: Adding " + name + " to " + "Users");
-
-        long result = db.insert("Users", null, contentValues);
-
-        if (result == -1) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    public Cursor getData(String table){
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT * FROM " + table;
-        Cursor data = db.rawQuery(query, null);
-        return data;
-    }
-
-    public boolean setView(String id, Integer i){
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "UPDATE Tweets set viewed = " + i + " WHERE tweetID = " + id;
-        db.execSQL(query);
-        return true;
-    }
-
-    public boolean findData (String field, String value, String table) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        String Query = "SELECT * FROM " + table + " WHERE " + field + " = '" + value + "'";
-        Cursor cursor = db.rawQuery(Query, null);
-        if(cursor.getCount() <= 0){
-            cursor.close();
-            return false;
-        }
-        cursor.close();
-        return true;
-    }
-
-    public Cursor getItemID(String table, String name){
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT " + COL1 + " FROM " + table +
-                " WHERE " + COL2 + " = '" + name + "'";
-        Cursor data = db.rawQuery(query, null);
-        return data;
-    }
-
-    public void updateName(String table, String newName, int id, String oldName){
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "UPDATE " + table + " SET " + COL2 +
-                " = '" + newName + "' WHERE " + COL1 + " = '" + id + "'" +
-                " AND " + COL2 + " = '" + oldName + "'";
-        Log.d(TAG, "updateName: query: " + query);
-        Log.d(TAG, "updateName: Setting name to " + newName);
-        db.execSQL(query);
-    }
-
-    public void deleteName(String table, int id, String name){
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "DELETE FROM " + table + " WHERE "
-                + COL1 + " = '" + id + "'" +
-                " AND " + COL2 + " = '" + name + "'";
-        Log.d(TAG, "deleteName: query: " + query);
-        Log.d(TAG, "deleteName: Deleting " + name + " from database.");
-        db.execSQL(query);
-    }
-
-    public void createNew(String tablename) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        String createTable = "CREATE TABLE " + tablename + " (ID INTEGER PRIMARY KEY AUTOINCREMENT)";
-        db.execSQL(createTable);
-    }
-
-
-    public void deleteTable(String tablename) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        String createTable = "DROP TABLE [ IF EXISTS ] " + tablename;
-        db.execSQL(createTable);
     }
 
 }
