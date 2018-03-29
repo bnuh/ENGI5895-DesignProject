@@ -6,15 +6,13 @@ import com.google.gson.annotations.SerializedName;
 
 public class Profile {
 
-    public Profile(){    }
-
-    private String id;
-
-    private String tweetID;
-
     @SerializedName("name")
     @Expose
     private String name;
+
+    @SerializedName("tweetID")
+    @Expose
+    private String tweetID;
 
     @SerializedName("image")
     @Expose
@@ -48,8 +46,8 @@ public class Profile {
         this.image = image;
     }
 
-    public void setTweetID(String id) {
-        this.tweetID = id;
+    public void setTweetID(String tweetID) {
+        this.tweetID = tweetID;
     }
 
     public String getTweet() {

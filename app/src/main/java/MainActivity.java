@@ -14,12 +14,12 @@ import com.mindorks.placeholderview.SwipeDecor;
 import com.mindorks.placeholderview.SwipeDirectionalView;
 
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
 
+import twitter4j.Paging;
 import twitter4j.Status;
 import twitter4j.Twitter;
-import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
 
@@ -62,21 +62,22 @@ public class MainActivity extends AppCompatActivity implements Card.Callback {
                         .setRelativeScale(0.01f)
                         );
 
-        //List<Profile> profiles = Utils.loadProfiles(db);
-
-        ArrayList<Profile> profiles = Utils.loadProfiles(db);
         Point cardViewHolderSize = new Point(windowSize.x, windowSize.y - bottomMargin);
 
-        for (Profile profile : profiles) {
+        for (Profile profile : Utils.loadProfiles(db)) {
             mSwipeView.addView(new Card(mContext, profile, cardViewHolderSize, this));
         }
+
+        //for (Profile profile : Utils.loadProfiles(this.getApplicationContext())) {
+        //    mSwipeView.addView(new Card(mContext, profile, cardViewHolderSize, this));
+        //}
 
         Log.d("DEMO", "Main Activity Done");
 
     }
 
     public void onSwipeUp() {
-
+        //favorite tweet
     }
 
     public void onSwipeLeft(TextView tweetView)  {
@@ -87,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements Card.Callback {
 
         @Override
         protected String doInBackground(Void... params) {
+
             try {
                 List<twitter4j.Status> tweets = null;
 
@@ -109,19 +111,33 @@ public class MainActivity extends AppCompatActivity implements Card.Callback {
 
                 mContext = getApplicationContext();
 
-                for (twitter4j.Status st : tweets) {
-                    if (!db.findData("name", st.getUser().getId(), "Users")) {
-                        db.addUser(st.getUser().getScreenName());
-                        Log.d("TWEETS", st.getUser().getName());
-                        Log.d("TWEETS", Long.toString(st.getId()));
-                        Log.d("TWEETS", st.getText());
-                        Log.d("TWEETS", st.getUser().getProfileImageURL());
-                        //Log.d("TWEETS", st.getCreatedAt());
+                int page = 1;
+
+                Paging paging = new Paging(page, 40);
+
+                do {
+                    tweets = twit.getHomeTimeline(paging);
+                    for (twitter4j.Status st : tweets) {
+                        if (!db.findData("name", st.getUser().getName(), "Users")) {
+                            db.addUser(st.getUser().getName(), st.getUser().getBiggerProfileImageURL());
+                            Log.d("TWEETS", st.getUser().getName());
+                            Log.d("TWEETS", Long.toString(st.getId()));
+                            Log.d("TWEETS", st.getText());
+                            Log.d("TWEETS", st.getUser().getProfileImageURL());
+                        }
+                        if (!db.findData("tweetID", st.getUser().getName(), "Tweets")) {
+                            db.addTweet(st);
+                        }
+                        page++;
                     }
-                    if (!db.findData("tweetID", st.getId(), "Tweets")) {
-                        db.addTweet(st);
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
                     }
-                }
+
+                } while(page < 10);
 
             }
             catch(Exception ex){

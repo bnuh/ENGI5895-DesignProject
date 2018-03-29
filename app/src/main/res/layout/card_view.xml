@@ -84,7 +84,7 @@
                 android:layout_weight="0"
                 android:lineSpacingExtra="8sp"
                 android:textAlignment="center"
-                android:textSize="30sp"
+                android:textSize="22sp"
                 android:visibility="visible" />
 
             <TextView
