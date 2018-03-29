@@ -20,6 +20,8 @@ import com.mindorks.placeholderview.annotations.swipe.SwipeTouch;
 import com.mindorks.placeholderview.annotations.swipe.SwipeView;
 import com.mindorks.placeholderview.annotations.swipe.SwipingDirection;
 
+import twitter4j.Status;
+
 @Layout(R.layout.card_view)
 public class Card {
 
@@ -54,7 +56,7 @@ public class Card {
     public void onResolved() {
         Glide.with(mContext).load(mProfile.getImage()).into(profileImageView);
         tweetView.setText(mProfile.getTweet());
-        nameAgeTxt.setText(mProfile.getName() + ", " + mProfile.getUsername());
+        nameAgeTxt.setText(mProfile.getUser() + ", " + mProfile.getName());
         locationNameTxt.setText(mProfile.getLocation());
         mSwipeView.setAlpha(1);
     }

@@ -21,6 +21,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COL6 = "tweetID";
     private static final String COL7 = "viewed";
     private static final String COL8 = "topic";
+    private static final String COL9 = "username";
+    private static final String COL10 = "location";
 
     public DatabaseHelper(Context context) {
         super(context, TABLE_NAME, null, 1);
@@ -32,7 +34,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COL2 +" TEXT, " + COL3 + " INTEGER)";
         db.execSQL(createTable);
         createTable = "CREATE TABLE Tweets " + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COL2 +" TEXT, " + COL4 + " TEXT, " + COL5 + " TEXT, " + COL6 + " INTEGER, " + COL7 + " INTEGER)";
+                COL2 +" TEXT, " + COL4 + " TEXT, " + COL5 + " TEXT, " + COL6 + " INTEGER, " + COL7 + " INTEGER " + COL9 + " TEXT " + COL10 + " TEXT)";
         db.execSQL(createTable);
         createTable = "CREATE TABLE Topics " + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COL8 + " TEXT, " + COL3 + " INTEGER)";
@@ -45,6 +47,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    public int getCount() {
+        String countQuery = "SELECT  * FROM Tweets";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(countQuery, null);
+        int count = cursor.getCount();
+        cursor.close();
+        return count;
+    }
+
+
+    public Cursor getAll() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM Tweets";
+        Cursor data = db.rawQuery(query, null);
+        return data;
+    }
+
+
     public void createNew(SQLiteDatabase db, String tablename) {
         String createTable = "CREATE TABLE " + tablename + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COL2 +" TEXT, " + COL3 + " INTEGER)";
@@ -55,6 +75,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         String createCol = "ALTER TABLE " + tablename + " ADD COLUMN " + colName + type;
         db.execSQL(createCol);
+    }
+
+    public void reduceUserRating(String tablename, String id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE Users SET rating = (rating/2) WHERE name = " + id;
+        db.execSQL(query);
+    }
+
+    public void restoreUserRating(String id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE Users SET rating = " + 1 + " WHERE name = " + id;
+        db.execSQL(query);
+    }
+
+    public void reduceTopicRating(String topic) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE Topics SET rating = (rating/2) WHERE topic = " + topic;
+        db.execSQL(query);
+    }
+
+    public void restoreTopicRating(String tablename, String topic) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE Topics set rating = " + 1 + " WHERE topic = " + topic;
+        db.execSQL(query);
     }
 
     public boolean addData(String table, String item, String col) {
@@ -80,6 +124,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put("tweet", st.getText());
         contentValues.put("tweetID", st.getId());
         contentValues.put("imageURL", st.getUser().getProfileImageURL());
+        contentValues.put("username", st.getUser().getScreenName());
+        contentValues.put("location", st.getUser().getLocation());
         contentValues.put("viewed", 0);
 
         long result = db.insert("Tweets", null, contentValues);

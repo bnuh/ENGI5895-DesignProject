@@ -1,30 +1,18 @@
 package dependency.greendao.test.tinder.directional;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
-
 public class Profile {
 
-    @SerializedName("name")
-    @Expose
-    private String name;
+    public Profile(String id){
+        this.id = id;
+    }
 
-    @SerializedName("image")
-    @Expose
-    private String image;
-
-    @SerializedName("tweet")
-    @Expose
-    private String tweet;
-
-    @SerializedName("username")
-    @Expose
-    private String username;
-
-    @SerializedName("location")
-    @Expose
-    private String location;
+    String tweet;
+    String tweetID;
+    String name;
+    String location;
+    String imageURL;
+    String username;
+    String id;
 
     public String getName() {
         return name;
@@ -35,11 +23,11 @@ public class Profile {
     }
 
     public String getImage() {
-        return image;
+        return imageURL;
     }
 
     public void setImage(String image) {
-        this.tweet = image;
+        this.imageURL = image;
     }
 
     public String getTweet() {
@@ -50,16 +38,20 @@ public class Profile {
         this.tweet = tweet;
     }
 
-    public String getUsername() {
+    public void setTweetID(String tweetID) {
+        this.tweetID = tweetID;
+    }
+
+    public String getUser() {
         return username;
     }
 
-    public void setUsername(String username) {
+    public void setUser(String username) {
         this.username = username;
     }
 
     public String getLocation() {
-        return location;
+        return "Temp";
     }
 
     public void setLocation(String location) {

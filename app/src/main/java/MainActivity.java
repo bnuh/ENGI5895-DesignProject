@@ -1,6 +1,7 @@
 package dependency.greendao.test.tinder.directional;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,34 +14,33 @@ import android.widget.ImageView;
 import com.mindorks.placeholderview.SwipeDecor;
 import com.mindorks.placeholderview.SwipeDirectionalView;
 
-import java.sql.Date;
 import java.util.List;
+import java.util.ArrayList;
 
 import twitter4j.Paging;
 import twitter4j.Status;
-import twitter4j.Twitter;
+import twitter4j.TweetEntity;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
+
 
 public class MainActivity extends AppCompatActivity implements Card.Callback {
 
     private SwipeDirectionalView mSwipeView;
     private Context mContext;
     private int mAnimationDuration = 300;
-
     DatabaseHelper db;
+    List<twitter4j.Status> tweets = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        TwitterFetch t = new TwitterFetch();
-
         db = new DatabaseHelper(this);
 
+        TwitterFetch t = new TwitterFetch();
         t.execute();
-
         mSwipeView = findViewById(R.id.swipeView);
         mContext = getApplicationContext();
 
@@ -61,14 +61,13 @@ public class MainActivity extends AppCompatActivity implements Card.Callback {
                         .setRelativeScale(0.01f)
                         );
 
-
         Point cardViewHolderSize = new Point(windowSize.x, windowSize.y - bottomMargin);
 
-        for (Profile profile : Utils.loadProfiles(this.getApplicationContext())) {
+        db.close();
+
+        for(Profile profile : Utils.loadProfiles(db)){
             mSwipeView.addView(new Card(mContext, profile, cardViewHolderSize, this));
         }
-
-        Log.d("DEMO", "Main Activity Done");
 
     }
 
@@ -86,7 +85,6 @@ public class MainActivity extends AppCompatActivity implements Card.Callback {
         protected String doInBackground(Void... params) {
 
             try {
-                List<twitter4j.Status> tweets = null;
 
                 ConfigurationBuilder cf = new ConfigurationBuilder();
 
@@ -133,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements Card.Callback {
                         e.printStackTrace();
                     }
 
-                } while(page < 10);
+                } while(page < 40);
 
             }
             catch(Exception ex){
@@ -143,5 +141,4 @@ public class MainActivity extends AppCompatActivity implements Card.Callback {
         }
 
     }
-
 }
