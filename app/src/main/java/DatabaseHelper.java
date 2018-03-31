@@ -22,6 +22,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COL6 = "tweetID";
     private static final String COL7 = "viewed";
     private static final String COL8 = "topic";
+    private static final String COL9 = "username";
+    private static final String COL10 = "location";
 
     public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, 1);
@@ -30,7 +32,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COL2 +" TEXT, " + COL3 + " INTEGER)";
         db.execSQL(createTable);
         createTable = "CREATE TABLE IF NOT EXISTS Tweets " + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COL2 +" TEXT, " + COL4 + " TEXT, " + COL5 + " TEXT, " + COL6 + " INTEGER, " + COL7 + " INTEGER)";
+                COL2 +" TEXT, " + COL4 + " TEXT, " + COL5 + " TEXT, " + COL6 + " INTEGER, " + COL7 + " INTEGER " + COL9 + " TEXT, " + COL10 + " TEXT)";
         db.execSQL(createTable);
         createTable = "CREATE TABLE IF NOT EXISTS Topics " + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COL8 + " TEXT, " + COL3 + " INTEGER)";
@@ -43,7 +45,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COL2 +" TEXT, " + COL3 + " INTEGER)";
         db.execSQL(createTable);
         createTable = "CREATE TABLE IF NOT EXISTS Tweets " + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COL2 +" TEXT, " + COL4 + " TEXT, " + COL5 + " TEXT, " + COL6 + " INTEGER, " + COL7 + " INTEGER)";
+                COL2 +" TEXT, " + COL4 + " TEXT, " + COL5 + " TEXT, " + COL6 + " INTEGER, " + COL7 + " INTEGER " + COL9 + " TEXT, " + COL10 + " TEXT)";
         db.execSQL(createTable);
         createTable = "CREATE TABLE IF NOT EXISTS Topics " + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COL8 + " TEXT, " + COL3 + " INTEGER)";
@@ -108,6 +110,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put("tweet", st.getText());
         contentValues.put("tweetID", st.getId());
         contentValues.put("imageURL", st.getUser().getBiggerProfileImageURL());
+        contentValues.put("username", st.getUser().getScreenName());
+        contentValues.put("location", st.getUser().getLocation());
         contentValues.put("viewed", 0);
 
         long result = db.insert("Tweets", null, contentValues);
