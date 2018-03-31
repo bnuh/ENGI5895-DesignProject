@@ -32,8 +32,14 @@ public class Card {
     @View(R.id.nameAgeTxt)
     TextView nameAgeTxt;
 
+    @View(R.id.usernameTxt)
+    TextView usernameTxt;
+
     @View(R.id.locationNameTxt)
     TextView locationNameTxt;
+
+    @View(R.id.dateTxt)
+    TextView dateTxt;
 
     @SwipeView
     android.view.View mSwipeView;
@@ -54,8 +60,10 @@ public class Card {
     public void onResolved() {
         Glide.with(mContext).load(mProfile.getImage()).into(profileImageView);
         tweetView.setText(mProfile.getTweet());
-        nameAgeTxt.setText(mProfile.getName() + ", " + mProfile.getUsername());
+        nameAgeTxt.setText(mProfile.getName());
+        usernameTxt.setText("@" + mProfile.getUsername());
         locationNameTxt.setText(mProfile.getLocation());
+        //dateTxt.setText(mProfile.getDate());
         mSwipeView.setAlpha(1);
     }
 

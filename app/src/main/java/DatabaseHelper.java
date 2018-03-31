@@ -7,6 +7,7 @@ import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import java.util.Date;
 import java.util.ArrayList;
 
 
@@ -24,6 +25,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COL8 = "topic";
     private static final String COL9 = "username";
     private static final String COL10 = "location";
+    private static final String COL11 = "date";
 
     public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, 1);
@@ -32,7 +34,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COL2 +" TEXT, " + COL3 + " INTEGER)";
         db.execSQL(createTable);
         createTable = "CREATE TABLE IF NOT EXISTS Tweets " + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COL2 +" TEXT, " + COL4 + " TEXT, " + COL5 + " TEXT, " + COL6 + " INTEGER, " + COL7 + " INTEGER " + COL9 + " TEXT, " + COL10 + " TEXT)";
+                COL2 +" TEXT, " + COL4 + " TEXT, " + COL5 + " TEXT, " + COL6 + " INTEGER, " + COL7 + " INTEGER, " + COL9 + " TEXT, " + COL10 + " TEXT, " +  COL11 + " TEXT)";
         db.execSQL(createTable);
         createTable = "CREATE TABLE IF NOT EXISTS Topics " + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COL8 + " TEXT, " + COL3 + " INTEGER)";
@@ -45,7 +47,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COL2 +" TEXT, " + COL3 + " INTEGER)";
         db.execSQL(createTable);
         createTable = "CREATE TABLE IF NOT EXISTS Tweets " + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COL2 +" TEXT, " + COL4 + " TEXT, " + COL5 + " TEXT, " + COL6 + " INTEGER, " + COL7 + " INTEGER " + COL9 + " TEXT, " + COL10 + " TEXT)";
+                COL2 +" TEXT, " + COL4 + " TEXT, " + COL5 + " TEXT, " + COL6 + " INTEGER, " + COL7 + " INTEGER, " + COL9 + " TEXT, " + COL10 + " TEXT, " +  COL11 + " TEXT)";
         db.execSQL(createTable);
         createTable = "CREATE TABLE IF NOT EXISTS Topics " + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COL8 + " TEXT, " + COL3 + " INTEGER)";
@@ -69,6 +71,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             temp.setTweetID(data.getString(data.getColumnIndex("tweetID")));
             temp.setTweet(data.getString(data.getColumnIndex("tweet")));
             temp.setImage(data.getString(data.getColumnIndex("imageURL")));
+            temp.setUsername(data.getString(data.getColumnIndex("username")));
+            temp.setLocation(data.getString(data.getColumnIndex("location")));
+            temp.setDate(data.getString(data.getColumnIndex("date")));
             array.add(temp);
             data.moveToNext();
         }
@@ -105,6 +110,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public boolean addTweet(twitter4j.Status st) {
         SQLiteDatabase db = this.getWritableDatabase();
+        Date date = st.getCreatedAt();
         ContentValues contentValues = new ContentValues();
         contentValues.put("name", st.getUser().getName());
         contentValues.put("tweet", st.getText());
@@ -112,6 +118,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put("imageURL", st.getUser().getBiggerProfileImageURL());
         contentValues.put("username", st.getUser().getScreenName());
         contentValues.put("location", st.getUser().getLocation());
+        contentValues.put("date", String.format("%tm/%td/%tY", date, date, date));
         contentValues.put("viewed", 0);
 
         long result = db.insert("Tweets", null, contentValues);

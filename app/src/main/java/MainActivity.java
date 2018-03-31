@@ -13,15 +13,12 @@ import android.widget.ImageView;
 import com.mindorks.placeholderview.SwipeDecor;
 import com.mindorks.placeholderview.SwipeDirectionalView;
 
-import java.sql.Date;
 import java.util.List;
-import java.util.ArrayList;
 
-import twitter4j.Paging;
-import twitter4j.Status;
-import twitter4j.Twitter;
+import twitter4j.Paging;;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
+
 
 public class MainActivity extends AppCompatActivity implements Card.Callback {
 
@@ -92,7 +89,8 @@ public class MainActivity extends AppCompatActivity implements Card.Callback {
                         .setOAuthConsumerKey("20yNRIOurzQaKzs9t7C4HXWuV")
                         .setOAuthConsumerSecret("Pl9z3CqDrj5QSBYkMDaKxT6cx4AUSlf4Jm7UOf8ovkdgcuQvcD")
                         .setOAuthAccessToken("1942242924-aQgcIo4phlvOu38IGOphtIazT3mSiWUAnkTypHX")
-                        .setOAuthAccessTokenSecret("zTY5tAJKVG6aGW44DIEHzprxBDXZzpxVQfA44dcjl6KSt");
+                        .setOAuthAccessTokenSecret("zTY5tAJKVG6aGW44DIEHzprxBDXZzpxVQfA44dcjl6KSt")
+                        .setTweetModeExtended(true);
 
                 TwitterFactory tf = new TwitterFactory(cf.build());
                 twitter4j.Twitter twit = tf.getInstance();
@@ -117,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements Card.Callback {
                             Log.d("TWEETS", st.getUser().getName());
                             Log.d("TWEETS", Long.toString(st.getId()));
                             Log.d("TWEETS", st.getText());
-                            Log.d("TWEETS", st.getUser().getProfileImageURL());
+                            Log.d("TWEETS", st.getUser().getBiggerProfileImageURL());
                         }
                         if (!db.findData("tweetID", st.getUser().getName(), "Tweets")) {
                             db.addTweet(st);

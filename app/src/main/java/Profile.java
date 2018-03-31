@@ -2,6 +2,7 @@ package dependency.greendao.test.tinder.directional;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import java.util.Date;
 
 
 public class Profile {
@@ -17,6 +18,10 @@ public class Profile {
     @SerializedName("image")
     @Expose
     private String image;
+
+    @SerializedName("date")
+    @Expose
+    private String date;
 
     @SerializedName("tweet")
     @Expose
@@ -72,5 +77,13 @@ public class Profile {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

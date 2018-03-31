@@ -30,8 +30,6 @@ public class Utils {
     public static ArrayList<Profile> loadProfiles(DatabaseHelper db) {
         ArrayList<Profile> profiles = new ArrayList<>();
         profiles = db.getAll();
-        Profile temp = new Profile();
-
         return profiles;
     }
 
