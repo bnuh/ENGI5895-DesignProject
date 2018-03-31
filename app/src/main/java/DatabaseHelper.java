@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String TAG = "DatabaseHelper";
-    private static final String TABLE_NAME = "Swiper";
+    private static final String DB_NAME = "Swiper";
     private static final String COL1 = "ID";
     private static final String COL2 = "name";
     private static final String COL3 = "rating";
@@ -24,25 +24,35 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COL8 = "topic";
 
     public DatabaseHelper(Context context) {
-        super(context, TABLE_NAME, null, 1);
+        super(context, DB_NAME, null, 1);
+        SQLiteDatabase db = this.getWritableDatabase();
+        String createTable = "CREATE TABLE IF NOT EXISTS Users " + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COL2 +" TEXT, " + COL3 + " INTEGER)";
+        db.execSQL(createTable);
+        createTable = "CREATE TABLE IF NOT EXISTS Tweets " + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COL2 +" TEXT, " + COL4 + " TEXT, " + COL5 + " TEXT, " + COL6 + " INTEGER, " + COL7 + " INTEGER)";
+        db.execSQL(createTable);
+        createTable = "CREATE TABLE IF NOT EXISTS Topics " + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COL8 + " TEXT, " + COL3 + " INTEGER)";
+        db.execSQL(createTable);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createTable = "CREATE TABLE Users " + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+        String createTable = "CREATE TABLE IF NOT EXISTS Users " + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COL2 +" TEXT, " + COL3 + " INTEGER)";
         db.execSQL(createTable);
-        createTable = "CREATE TABLE Tweets " + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+        createTable = "CREATE TABLE IF NOT EXISTS Tweets " + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COL2 +" TEXT, " + COL4 + " TEXT, " + COL5 + " TEXT, " + COL6 + " INTEGER, " + COL7 + " INTEGER)";
         db.execSQL(createTable);
-        createTable = "CREATE TABLE Topics " + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+        createTable = "CREATE TABLE IF NOT EXISTS Topics " + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COL8 + " TEXT, " + COL3 + " INTEGER)";
         db.execSQL(createTable);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
-        db.execSQL("DROP IF TABLE EXISTS " + TABLE_NAME);
+        db.execSQL("DROP IF TABLE EXISTS " + DB_NAME);
         onCreate(db);
     }
 

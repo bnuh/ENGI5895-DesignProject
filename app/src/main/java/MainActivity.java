@@ -68,12 +68,6 @@ public class MainActivity extends AppCompatActivity implements Card.Callback {
             mSwipeView.addView(new Card(mContext, profile, cardViewHolderSize, this));
         }
 
-        //for (Profile profile : Utils.loadProfiles(this.getApplicationContext())) {
-        //    mSwipeView.addView(new Card(mContext, profile, cardViewHolderSize, this));
-        //}
-
-        Log.d("DEMO", "Main Activity Done");
-
     }
 
     public void onSwipeUp() {

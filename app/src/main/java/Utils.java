@@ -35,23 +35,6 @@ public class Utils {
         return profiles;
     }
 
-    public static List<Profile> loadProfiles(Context context) {
-        try {
-            GsonBuilder builder = new GsonBuilder();
-            Gson gson = builder.create();
-            JSONArray array = new JSONArray(loadJSONFromAsset(context, "profiles.json"));
-            List<Profile> profileList = new ArrayList<>();
-            for (int i = 0; i < array.length(); i++) {
-                Profile profile = gson.fromJson(array.getString(i), Profile.class);
-                profileList.add(profile);
-            }
-            return profileList;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
 
     public static Point getDisplaySize(WindowManager windowManager) {
         try {
