@@ -63,7 +63,7 @@ public class Card {
         nameAgeTxt.setText(mProfile.getName());
         usernameTxt.setText("@" + mProfile.getUsername());
         locationNameTxt.setText(mProfile.getLocation());
-        //dateTxt.setText(mProfile.getDate());
+        dateTxt.setText(mProfile.getDate());
         mSwipeView.setAlpha(1);
     }
 
@@ -81,7 +81,7 @@ public class Card {
         if (direction.getDirection() == SwipeDirection.LEFT.getDirection() ||
                 direction.getDirection() == SwipeDirection.LEFT_TOP.getDirection() ||
                 direction.getDirection() == SwipeDirection.LEFT_BOTTOM.getDirection()) {
-            mCallback.onSwipeLeft(tweetView);
+            mCallback.onSwipeLeft(tweetView,mProfile);
         }
     }
 
@@ -121,6 +121,6 @@ public class Card {
 
     interface Callback {
         void onSwipeUp();
-        void onSwipeLeft(TextView tweet);
+        void onSwipeLeft(TextView tweet, Profile p);
     }
 }

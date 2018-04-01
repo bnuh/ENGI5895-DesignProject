@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity implements Card.Callback {
     private SwipeDirectionalView mSwipeView;
     private Context mContext;
     private int mAnimationDuration = 300;
-
+    private Profile currentProfile;
     DatabaseHelper db;
 
     @Override
@@ -71,8 +71,11 @@ public class MainActivity extends AppCompatActivity implements Card.Callback {
         //favorite tweet
     }
 
-    public void onSwipeLeft(TextView tweetView)  {
-        Log.d("DEBUG_LEFT", tweetView.getText().toString());
+    public void onSwipeLeft(TextView tweet, Profile p)  {
+        Log.d("DEBUG_LEFT", tweet.getText().toString());
+        Log.d("DEBUG_LEFT", p.getID());
+        Log.d("DEBUG_LEFT", "Set viewed");
+        db.setView(p.getID());
     }
 
     public class TwitterFetch extends AsyncTask<Void, Void, String> {

@@ -33,6 +33,9 @@ public class Utils {
         return profiles;
     }
 
+    //public Profile randomTweet (ArrayList<Profile> profiles){
+    //    return
+    //}
 
     public static Point getDisplaySize(WindowManager windowManager) {
         try {

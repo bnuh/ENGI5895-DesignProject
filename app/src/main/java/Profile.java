@@ -39,6 +39,14 @@ public class Profile {
         return name;
     }
 
+    public String getID() {
+        return tweetID;
+    }
+
+    public void setID(String id) {
+        this.tweetID = id;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -49,10 +57,6 @@ public class Profile {
 
     public void setImage(String image) {
         this.image = image;
-    }
-
-    public void setTweetID(String tweetID) {
-        this.tweetID = tweetID;
     }
 
     public String getTweet() {

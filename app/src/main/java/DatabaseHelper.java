@@ -68,9 +68,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         while (data.moveToNext()) {
             Profile temp = new Profile();
             temp.setName(data.getString(data.getColumnIndex("name")));
-            temp.setTweetID(data.getString(data.getColumnIndex("tweetID")));
+            temp.setID(data.getString(data.getColumnIndex("tweetID")));
             temp.setTweet(data.getString(data.getColumnIndex("tweet")));
             temp.setImage(data.getString(data.getColumnIndex("imageURL")));
+            temp.setUsername(data.getString(data.getColumnIndex("username")));
             temp.setUsername(data.getString(data.getColumnIndex("username")));
             temp.setLocation(data.getString(data.getColumnIndex("location")));
             temp.setDate(data.getString(data.getColumnIndex("date")));
@@ -147,6 +148,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    public boolean reduceRating(String name){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE Users SET rating = 0 WHERE name = " + name;
+        db.execSQL(query);
+        return true;
+    }
+
     public Cursor getData(String table){
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT * FROM " + table;
@@ -154,9 +162,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return data;
     }
 
-    public boolean setView(String id, Integer i){
+    public boolean setView(String id){
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "UPDATE Tweets set viewed = " + i + " WHERE tweetID = " + id;
+        String query = "UPDATE Tweets SET viewed = 1 WHERE tweetID = " + id + ";";
         db.execSQL(query);
         return true;
     }

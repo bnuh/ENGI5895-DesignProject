@@ -25,7 +25,7 @@ dependencies {
     compile 'org.xerial:sqlite-jdbc:3.8.9.1'
     compile 'com.android.support:recyclerview-v7:27.1.0'
     compile 'com.mindorks.android:placeholderview:1.0.0-beta1'
-    compile('org.twitter4j:twitter4j-core:4.0.1') {
+    compile('org.twitter4j:twitter4j-core:4.0.6') {
         exclude group: 'com.google.android', module: 'support-v7'
     }
     annotationProcessor 'com.mindorks.android:placeholderview-compiler:1.0.0-beta1'
