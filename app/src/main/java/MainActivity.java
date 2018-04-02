@@ -86,6 +86,13 @@ public class MainActivity extends AppCompatActivity implements Card.Callback {
         db.setRating(p.getName());
     }
 
+    public void onSwipeRight(TextView tweet, Profile p)  {
+        Log.d("DEBUG_RIGHT", tweet.getText().toString());
+        Log.d("DEBUG_RIGHT", p.getID());
+        Log.d("DEBUG_RIGHT", "Set viewed");
+        db.setView(p.getID());
+    }
+
     public class TwitterFetch extends AsyncTask<Void, Void, String> {
 
         @Override

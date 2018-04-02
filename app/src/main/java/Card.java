@@ -83,6 +83,11 @@ public class Card {
                 direction.getDirection() == SwipeDirection.LEFT_BOTTOM.getDirection()) {
             mCallback.onSwipeLeft(tweetView,mProfile);
         }
+        else if (direction.getDirection() == SwipeDirection.RIGHT.getDirection() ||
+                direction.getDirection() == SwipeDirection.RIGHT_TOP.getDirection() ||
+                direction.getDirection() == SwipeDirection.RIGHT_BOTTOM.getDirection()) {
+            mCallback.onSwipeRight(tweetView,mProfile);
+        }
     }
 
     @SwipeCancelState
@@ -122,5 +127,6 @@ public class Card {
     interface Callback {
         void onSwipeUp();
         void onSwipeLeft(TextView tweet, Profile p);
+        void onSwipeRight(TextView tweet, Profile p);
     }
 }
