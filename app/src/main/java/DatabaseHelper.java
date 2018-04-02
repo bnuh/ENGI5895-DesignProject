@@ -1,4 +1,4 @@
-package dependency.greendao.test.tinder.directional;
+package ENGI5895.DesignProject.BryanAndre;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -114,6 +114,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Date date = st.getCreatedAt();
         ContentValues contentValues = new ContentValues();
         contentValues.put("name", st.getUser().getName());
+        if (st.isRetweet()){
+            contentValues.put("tweet", st.getRetweetedStatus().getText());
+        }
+        else {
+            contentValues.put("tweet", st.getText());
+        }
         contentValues.put("tweet", st.getText());
         contentValues.put("tweetID", st.getId());
         contentValues.put("imageURL", st.getUser().getBiggerProfileImageURL());

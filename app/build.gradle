@@ -4,13 +4,25 @@ android {
     compileSdkVersion 27
     buildToolsVersion "26.0.2"
     defaultConfig {
-        applicationId "dependency.greendao.test.tinder.directional"
-        minSdkVersion 16
+        applicationId "ENGI5895.DesignProject.BryanAndre"
+        minSdkVersion 25
         targetSdkVersion 27
+        multiDexEnabled true
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+    packagingOptions {
+        //exclude 'edu/stanford/nlp/pipeline/demo/corenlp-brat.html'
+    }
+}
+
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
 }
 
 dependencies {
@@ -18,6 +30,7 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    compile 'com.android.support:multidex:1.0.1'
     compile 'com.android.support:appcompat-v7:27.1.0'
     compile 'com.android.support:cardview-v7:27.1.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
@@ -28,6 +41,8 @@ dependencies {
     compile('org.twitter4j:twitter4j-core:4.0.6') {
         exclude group: 'com.google.android', module: 'support-v7'
     }
+    //compile('edu.stanford.nlp:stanford-corenlp:3.6.0')
+    //compile('edu.stanford.nlp:stanford-corenlp:3.6.0:models')
     annotationProcessor 'com.mindorks.android:placeholderview-compiler:1.0.0-beta1'
     compile 'jp.wasabeef:glide-transformations:2.0.2'
 }

@@ -1,4 +1,4 @@
-package dependency.greendao.test.tinder.directional;
+package ENGI5895.DesignProject.BryanAndre;
 
 import android.content.Context;
 import android.graphics.Point;
@@ -8,12 +8,13 @@ import android.view.Gravity;
 import android.util.Log;
 import android.os.AsyncTask;
 import android.widget.TextView;
-import android.widget.ImageView;
 
 import com.mindorks.placeholderview.SwipeDecor;
 import com.mindorks.placeholderview.SwipeDirectionalView;
 
 import java.util.List;
+
+//import edu.stanford.nlp.simple.Sentence;
 
 import twitter4j.Paging;;
 import twitter4j.TwitterFactory;
@@ -60,6 +61,11 @@ public class MainActivity extends AppCompatActivity implements Card.Callback {
                         );
 
         Point cardViewHolderSize = new Point(windowSize.x, windowSize.y - bottomMargin);
+
+        //Sentence sent = new Sentence("Lucy is in the sky with diamonds.");
+        //List<String> nerTags = sent.nerTags();  // [PERSON, O, O, O, O, O, O, O]
+        //String firstPOSTag = sent.posTag(0);   // NNP
+        //Log.d("NLP", firstPOSTag);
 
         for (Profile profile : Utils.loadProfiles(db)) {
             mSwipeView.addView(new Card(mContext, profile, cardViewHolderSize, this));

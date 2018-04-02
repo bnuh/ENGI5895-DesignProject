@@ -1,4 +1,4 @@
-package dependency.greendao.test.tinder.directional;
+package ENGI5895.DesignProject.BryanAndre;
 
 import android.content.Context;
 import android.graphics.Point;
