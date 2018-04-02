@@ -72,7 +72,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             temp.setTweet(data.getString(data.getColumnIndex("tweet")));
             temp.setImage(data.getString(data.getColumnIndex("imageURL")));
             temp.setUsername(data.getString(data.getColumnIndex("username")));
-            temp.setUsername(data.getString(data.getColumnIndex("username")));
             temp.setLocation(data.getString(data.getColumnIndex("location")));
             temp.setDate(data.getString(data.getColumnIndex("date")));
             array.add(temp);
@@ -116,6 +115,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put("name", st.getUser().getName());
         if (st.isRetweet()){
             contentValues.put("tweet", st.getRetweetedStatus().getText());
+            //contentValues.put("tweet", st.getText());
         }
         else {
             contentValues.put("tweet", st.getText());
@@ -156,7 +156,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public boolean reduceRating(String name){
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "UPDATE Users SET rating = 0 WHERE name = " + name;
+        String query = "UPDATE Users SET rating = 0 WHERE name LIKE '%" + name + "%'";
         db.execSQL(query);
         return true;
     }
@@ -177,7 +177,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public boolean findData (String field, String value, String table) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String Query = "SELECT * FROM " + table + " WHERE " + field + " = '" + value + "'";
+        String Query = "SELECT * FROM " + table + " WHERE " + field + " LIKE '%" + value + "%'";
         Cursor cursor = db.rawQuery(Query, null);
         if(cursor.getCount() <= 0){
             cursor.close();
