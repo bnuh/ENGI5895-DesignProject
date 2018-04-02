@@ -16,7 +16,6 @@ import java.util.List;
 
 //import edu.stanford.nlp.simple.Sentence;
 
-import twitter4j.*;
 import twitter4j.Paging;;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
@@ -82,7 +81,9 @@ public class MainActivity extends AppCompatActivity implements Card.Callback {
         Log.d("DEBUG_LEFT", tweet.getText().toString());
         Log.d("DEBUG_LEFT", p.getID());
         Log.d("DEBUG_LEFT", "Set viewed");
+        Log.d("DEBUG_LEFT", "Set rating");
         db.setView(p.getID());
+        db.setRating(p.getName());
     }
 
     public class TwitterFetch extends AsyncTask<Void, Void, String> {
@@ -99,8 +100,8 @@ public class MainActivity extends AppCompatActivity implements Card.Callback {
                         .setOAuthConsumerKey("20yNRIOurzQaKzs9t7C4HXWuV")
                         .setOAuthConsumerSecret("Pl9z3CqDrj5QSBYkMDaKxT6cx4AUSlf4Jm7UOf8ovkdgcuQvcD")
                         .setOAuthAccessToken("1942242924-aQgcIo4phlvOu38IGOphtIazT3mSiWUAnkTypHX")
-                        .setOAuthAccessTokenSecret("zTY5tAJKVG6aGW44DIEHzprxBDXZzpxVQfA44dcjl6KSt");
-                        //.setTweetModeExtended(true);
+                        .setOAuthAccessTokenSecret("zTY5tAJKVG6aGW44DIEHzprxBDXZzpxVQfA44dcjl6KSt")
+                        .setTweetModeExtended(true);
 
                 TwitterFactory tf = new TwitterFactory(cf.build());
                 twitter4j.Twitter twit = tf.getInstance();

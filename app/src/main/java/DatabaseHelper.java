@@ -31,26 +31,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         super(context, DB_NAME, null, 1);
         SQLiteDatabase db = this.getWritableDatabase();
         String createTable = "CREATE TABLE IF NOT EXISTS Users " + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COL2 +" TEXT, " + COL3 + " INTEGER)";
+                COL2 +" TEXT, " + COL3 + " REAL)";
         db.execSQL(createTable);
         createTable = "CREATE TABLE IF NOT EXISTS Tweets " + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COL2 +" TEXT, " + COL4 + " TEXT, " + COL5 + " TEXT, " + COL6 + " INTEGER, " + COL7 + " INTEGER, " + COL9 + " TEXT, " + COL10 + " TEXT, " +  COL11 + " TEXT)";
         db.execSQL(createTable);
         createTable = "CREATE TABLE IF NOT EXISTS Topics " + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COL8 + " TEXT, " + COL3 + " INTEGER)";
+                COL8 + " TEXT, " + COL3 + " REAL)";
         db.execSQL(createTable);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createTable = "CREATE TABLE IF NOT EXISTS Users " + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COL2 +" TEXT, " + COL3 + " INTEGER)";
+                COL2 +" TEXT, " + COL3 + " REAL)";
         db.execSQL(createTable);
         createTable = "CREATE TABLE IF NOT EXISTS Tweets " + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COL2 +" TEXT, " + COL4 + " TEXT, " + COL5 + " TEXT, " + COL6 + " INTEGER, " + COL7 + " INTEGER, " + COL9 + " TEXT, " + COL10 + " TEXT, " +  COL11 + " TEXT)";
         db.execSQL(createTable);
         createTable = "CREATE TABLE IF NOT EXISTS Topics " + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COL8 + " TEXT, " + COL3 + " INTEGER)";
+                COL8 + " TEXT, " + COL3 + " REAL)";
         db.execSQL(createTable);
     }
 
@@ -168,11 +168,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return data;
     }
 
-    public boolean setView(String id){
+    public void setView(String id){
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "UPDATE Tweets SET viewed = 1 WHERE tweetID = " + id + ";";
-        db.execSQL(query);
-        return true;
+        ContentValues cv = new ContentValues();
+        cv.put("viewed","1"); //These Fields should be your String values of actual column names
+        db.update("Tweets", cv, "tweetID="+id, null);
     }
 
     public boolean findData (String field, String value, String table) {
@@ -193,6 +193,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 " WHERE " + COL2 + " = '" + name + "'";
         Cursor data = db.rawQuery(query, null);
         return data;
+    }
+
+    public void setRating(String id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE Users SET rating = (rating/2) WHERE name = '" + id + "'";
+        db.execSQL(query);
     }
 
     public void updateName(String table, String newName, int id, String oldName){
