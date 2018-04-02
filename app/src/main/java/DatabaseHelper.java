@@ -1,4 +1,4 @@
-package ENGI5895.DesignProject.BryanAndre;
+package dependency.greendao.test.tinder.directional;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -229,27 +229,3 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

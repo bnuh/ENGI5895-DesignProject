@@ -36,12 +36,12 @@
 
                     <ImageView
                         android:id="@+id/profileImageView"
-                        android:layout_width="125sp"
-                        android:layout_height="0dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_marginBottom="0dp"
                         android:layout_weight="0"
                         android:adjustViewBounds="false"
-                        android:contentDescription="@string/profile_image"
+                        android:contentDescription="Profile Image"
                         android:scaleType="fitXY"
                         android:visibility="visible" />
 
@@ -93,6 +93,7 @@
             <TextView
                 android:id="@+id/tweetView"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="0"
                 android:autoLink="web"
                 android:clickable="true"
@@ -100,7 +101,7 @@
                 android:elegantTextHeight="true"
                 android:focusable="true"
                 android:lineSpacingExtra="8sp"
-                android:textAlignment="center"
+                android:textAlignment="textStart"
                 android:textSize="20sp"
                 android:visibility="visible" />
 

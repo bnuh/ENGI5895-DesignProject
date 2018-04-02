@@ -1,4 +1,4 @@
-package ENGI5895.DesignProject.BryanAndre;
+package dependency.greendao.test.tinder.directional;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

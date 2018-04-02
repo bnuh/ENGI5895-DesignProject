@@ -1,4 +1,4 @@
-package ENGI5895.DesignProject.BryanAndre;
+package dependency.greendao.test.tinder.directional;
 
 import android.content.Context;
 import android.graphics.Point;
@@ -16,6 +16,7 @@ import java.util.List;
 
 //import edu.stanford.nlp.simple.Sentence;
 
+import twitter4j.*;
 import twitter4j.Paging;;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements Card.Callback {
                         .setPaddingTop(20)
                         .setSwipeAnimTime(mAnimationDuration)
                         .setRelativeScale(0.01f)
-                        );
+                );
 
         Point cardViewHolderSize = new Point(windowSize.x, windowSize.y - bottomMargin);
 
@@ -98,8 +99,8 @@ public class MainActivity extends AppCompatActivity implements Card.Callback {
                         .setOAuthConsumerKey("20yNRIOurzQaKzs9t7C4HXWuV")
                         .setOAuthConsumerSecret("Pl9z3CqDrj5QSBYkMDaKxT6cx4AUSlf4Jm7UOf8ovkdgcuQvcD")
                         .setOAuthAccessToken("1942242924-aQgcIo4phlvOu38IGOphtIazT3mSiWUAnkTypHX")
-                        .setOAuthAccessTokenSecret("zTY5tAJKVG6aGW44DIEHzprxBDXZzpxVQfA44dcjl6KSt")
-                        .setTweetModeExtended(true);
+                        .setOAuthAccessTokenSecret("zTY5tAJKVG6aGW44DIEHzprxBDXZzpxVQfA44dcjl6KSt");
+                        //.setTweetModeExtended(true);
 
                 TwitterFactory tf = new TwitterFactory(cf.build());
                 twitter4j.Twitter twit = tf.getInstance();
