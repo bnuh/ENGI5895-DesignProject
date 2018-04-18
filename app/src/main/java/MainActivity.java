@@ -70,7 +70,6 @@ public class MainActivity extends AppCompatActivity implements Card.Callback {
         for (Profile profile : Utils.loadProfiles(db)) {
             mSwipeView.addView(new Card(mContext, profile, cardViewHolderSize, this));
         }
-
     }
 
     public void onSwipeUp() {

@@ -211,6 +211,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(query);
     }
 
+    public void updateView(int id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE tweets SET viewed = 1 WHERE tweetID = '" + id + "'";
+        Log.d(TAG, "up: query: " + query);
+        Log.d(TAG, "updateView: Setting view");
+        db.execSQL(query);
+    }
+
     public void deleteName(String table, int id, String name){
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "DELETE FROM " + table + " WHERE "
