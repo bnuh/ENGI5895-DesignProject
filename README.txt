@@ -1,4 +1,4 @@
-fdgdENGI5895 Design Project
+ENGI5895 Design Project
 Swipe Weighted Twitter Randomizer
 Bryan Melanson & Andre Blanco
 
